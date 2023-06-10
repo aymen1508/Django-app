@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{item.name}}{% endblock title %}
+{% block content %}
+    <div class="flex justify-center space-x-6">
+        <div style="max-width:50%">
+            <img src="{{item.image.url}}" alt="" class="rounded-xl border border-gray-300">
+        </div>
+        <div class="bg-gray-100 rounded-xl p-6" style="min-width:30%">
+            <h2 class="text-2xl font-semibold">{{item.name}}</h2>
+            <span class="text-xl">Price : </span><span class="text-green-600 text-xl">{{item.price}}dt</span>
+            <p>Available : {% if item.is_sold %} ❌ {% else %} ✅ {% endif %}</p>
+            <div>
+                <span>Created at : {{item.created_at}}</span>
+            </div>
+            <p>Description :</p>
+            <div class="bg-white rounded-xl p-3 mt-3">
+                <p>{{item.description}}</p>
+            </div>
+            <div class="space-x-6 mt-5">
+                {% if request.user == item.created_by %}
+                <a href="{%url 'item:edit' item.id%}" class="px-4 py-2 rounded-xl bg-gray-600 hover:bg-gray-700 text-white text-lg font-semibold">Edit</a>
+                <a href="{%url 'item:delete' item.id%}" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-lg font-semibold">Delete</a>
+                {% else %}            
+                <a href="{%url 'conversation:new' item.id%}" class="p-4 bg-teal-600 hover:bg-teal-700 text-white text-lg rounded-xl font-semibold">Contact Seller</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="bg-gray-200 mt-6 p-6">
+        <p class="text-2xl font-semibold text-center">Suggested items :</p>
+        <div class="grid grid-cols-3 gap-6 p-6">
+            {% for other_item in other_items %}
+                <div class="h-1/4">
+                    <a href="{%url 'item:detail' other_item.id%}">
+                        <div>
+                            <img src="{{other_item.image.url}}" alt="" class="rounded-t-xl">
+                        </div>
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{other_item.name}}</h2>
+                            <div>
+                                <span>Price : </span><span class="text-green-600">{{other_item.price}}dt</span>
+                            </div>
+                            <div>
+                                <span>Created at : {{other_item.created_at}}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% block title %}Conversation | {{conversation.item.name}}{% endblock title %}
+{% block content %}
+<h1 class="text-3xl mb-5">Conversations / {{conversation.item.name}}</h1>
+<div class="space-y-5 bg-gray-200 p-5 rounded-xl mx-auto w-2/3">
+    {% for message in conversation.messages.all %}
+    <div>
+        <div {% if message.created_by == request.user %}class="flex flex-row-reverse"{% endif %}>
+            <span style="max-width:60%" class="inline-block rounded-xl px-4 py-2 {% if message.created_by == request.user %}bg-blue-300 rounded-tr-none {% else %} bg-white rounded-tl-none{% endif %}">{{message.content}}</span>
+        </div>
+        <div {% if message.created_by == request.user %}class="flex flex-row-reverse"{% endif %}>
+            <p class="text-xs font-semibold mt-2 text-gray-500">{{message.created_at}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<form action="." method="post" class="bg-gray-100 mx-auto w-2/3 rounded-xl mt-3 p-4 grid grid-cols-10 gap-3">
+    {% csrf_token %}
+    <div class="col-span-8">{{form.content}}</div>
+    <div class="col-span-2"><button class="px-4 py-3 mt-0 bg-teal-600 hover:bg-teal-700 rounded-xl text-white font-semibold">Send</button></div>
+</form>
+{% endblock content %}

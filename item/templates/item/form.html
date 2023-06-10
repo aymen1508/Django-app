@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% block title %}{{title}}{% endblock title %}
+{% block content %}
+<div class="w-1/3 bg-gray-200 rounded-xl p-6 mx-auto">
+    <p class="font-semibold text-2xl">{{title}} item :</p>
+    <form action="." method="POST" enctype="multipart/form-data" class="pt-6">
+        {% csrf_token %}
+        {% if title == 'Add' %}
+        <div class="mb-3">
+            <label class="mb-2 inline-block" for="category">Category :</label><br>
+            {{form.category}}
+        </div>
+        {% else %}
+        <div class="mb-3">
+            <label class="mb-2 inline-block" for="sold">Sold ? :</label>
+            {{form.is_sold}}
+        </div>
+        {% endif %}
+        <div class="mb-3">
+            <label class="mb-2 inline-block" for="name">Name :</label><br>
+            {{form.name}}
+        </div>
+        <div class="mb-3">
+            <label class="mb-2 inline-block" for="price">Price :</label><br>
+            {{form.price}}
+        </div>
+        <div class="mb-3">
+            <label class="mb-2 inline-block" for="Description">Description :</label><br>
+            {{form.description}}
+        </div>
+        <div class="mb-3">
+            <label class="mb-2 inline-block" for="image">Image :</label><br>
+            {{form.image}}
+        </div>
+        {% if form.errors or form.non_field_errors %}
+            <div class="mb-3 p-6 bg-red-100 rounded-xl">
+                {% for field in form %}
+                    {{field.errors}}
+                {% endfor %}
+                {{form.non_field_errors}}
+            </div>
+        {% endif %}
+
+        <button class="px-4 py-2 bg-teal-600 hover:bg-teal-700 rounded-xl text-white font-semibold">{{title}}</button>
+    </form>
+</div>
+
+{% endblock content %}
